@@ -3407,6 +3407,17 @@ enchant.Map = enchant.Class.create(enchant.Entity, {
         x = x / tileWidth | 0;
         y = y / tileHeight | 0;
         if (this.collisionData != null) {
+            console.log(x);
+            console.log(y);
+            console.log("this.collisionData.length : "+this.collisionData.length);
+            console.log("this.collisionData[y][x].length : "+this.collisionData[y][x].length);
+            console.log(this.collisionData[y][x]);
+            if(this.collisionData[y][x] !=20){
+            return true;
+            }
+            else if(this.collisionData[y][x]== 20){
+                return false;
+            }
             return this.collisionData[y] && !!this.collisionData[y][x];
         } else {
             for (var i = 0, len = this._data.length; i < len; i++) {
@@ -3420,6 +3431,18 @@ enchant.Map = enchant.Class.create(enchant.Entity, {
             return false;
         }
     },
+hitbox: function(x,y){
+    var cando = 20;
+    console.log(x);
+    console.log(y-100);
+    console.log(this.collisionData[x][y]);
+    if(this.collisionData[x][y]!=20){
+        return true;
+    }
+    else false;
+},
+
+
     /**
      * Image with which the tile set is displayed on the map.
      * @type enchant.Surface
