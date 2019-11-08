@@ -5,8 +5,9 @@
  * Copyright UEI Corporation
  * Released under the MIT license.
  */
-
 (function(window, undefined) {
+
+
 
 // ECMA-262 5th edition Functions
 if (typeof Object.defineProperty !== 'function') {
@@ -2643,7 +2644,10 @@ enchant.Entity = enchant.Class.create(enchant.Node, {
      * The default distance is the average of both objects width and height.
      * @return {Boolean} True, if a collision was detected.
      */
+    //within: function(other, distance) {
     within: function(other, distance) {
+        this.y = this.y + 16;
+        
         if (this._dirty) {
             this._updateCoordinate();
         } if (other._dirty) {
@@ -3407,11 +3411,11 @@ enchant.Map = enchant.Class.create(enchant.Entity, {
         x = x / tileWidth | 0;
         y = y / tileHeight | 0;
         if (this.collisionData != null) {
-            console.log(x);
-            console.log(y);
-            console.log("this.collisionData.length : "+this.collisionData.length);
-            console.log("this.collisionData[y][x].length : "+this.collisionData[y][x].length);
-            console.log(this.collisionData[y][x]);
+           // console.log(x);
+            //console.log(y);
+            //console.log("this.collisionData.length : "+this.collisionData.length);
+            //console.log("this.collisionData[y][x].length : "+this.collisionData[y][x].length);
+            //console.log(this.collisionData[y][x]);
             if(this.collisionData[y][x] !=20){
             return true;
             }

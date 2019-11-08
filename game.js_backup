@@ -1,0 +1,216 @@
+enchant(); // おまじない
+ 
+window.onload = function() {
+    var game_ = new Game(320, 320); // 表示領域の大きさを設定
+    game_.fps = 24;                 // ゲームの進行スピードを設定
+   
+    // 行の終わりには、;（セミコロン）を付けます。
+    game_.preload('./img/start.png', './img/gameover.png', './img/retry_button.png', './img/chara1.png','./img/bg1.png','./img/bg2.png','./img/chara2.png','./img/chara6.png'); 
+    game_.onload = function() { // ゲームの準備が整ったらメインの処理を実行します。
+ console.log("test");
+        var createGameScene = function() {
+            // 固定の値であることを分かりやすくするために大文字で書いています
+                // 固定の値は「定数」と呼ばれ、言語によっては別の書き方をする場合があります
+                // JavaScriptにも「const」という書き方がありますが、対応していないWebブラウザがあるため使っていません
+                var GROUND_LINE = 250;   // 地平線の高さ（固定）
+                var SCROLL_SPEED = 10;
+                var scorll = 0;
+                var scoreLabel = new Label("");
+                scoreLabel.color = '#fff';
+                game_.keybind( 'M'.charCodeAt(0), 'a' );
+
+                var scene = new Scene();                   // 新しいシーンを作る
+                scene.backgroundColor = '#8cc820';         // シーンの背景色を設定
+            
+                var bg1= new Sprite(320,320);
+                 bg1.image = game_.assets['./img/bg1.png'];
+                 bg1.x=0;
+                 bg1.y=0;
+                 scene.addChild(bg1);
+                 var bg2= new Sprite(320,320);
+                 bg2.image = game_.assets['./img/bg2.png'];
+                 bg2.x=320;
+                 bg2.y=0;
+                 scene.addChild(bg2);
+                 scene.addChild(scoreLabel);  
+//クマ
+                var kuma = new Sprite(32, 32);                   // くまを作ります
+            kuma.image = game_.assets['./img/chara1.png']; // くまの画像'を設定します
+            kuma.x = 80;                                       // 画面やや左側に配置
+            kuma.y = GROUND_LINE - kuma.height;         // くまの下端を地平線の高さと合わせる
+            scene.addChild(kuma); 
+        /*    var kumaDead  = function(){
+                alert("game over");
+                kuma.frame = 3;
+                game_.pushScene(createGameoverScene(scroll));
+            }*/  
+//ブタ
+            var buta = new Sprite(30,30);
+            buta.image = game_.assets['./img/chara2.png'];
+            buta.x =-buta.width;
+            buta.y = GROUND_LINE-buta.height;
+            scene.addChild(buta);
+//スライム
+            var suraimu  = new Sprite(30,30);
+            suraimu.image = game_.assets['./img/chara6.png'];
+            suraimu.x = -suraimu.width;
+            suraimu.y = GROUND_LINE - suraimu.height;
+            scene.addChild(suraimu);
+            
+
+            console.log("test1");
+            scene.addEventListener(Event.ENTER_FRAME,function(){
+                kuma.frame ++;
+                if(kuma.frame >2){
+                    kuma.frame =0;
+                }
+            });
+
+            /////////////////////////////////////////////
+            scene.addEventListener(Event.ENTER_FRAME,function(){
+                if (game_.input.left){
+                    console.log("left");
+                    bg1.x += SCROLL_SPEED;
+                    bg2.x += SCROLL_SPEED;
+                    console.log(bg1.x);
+                    console.log(bg2.x);
+                    if (bg1.x >= 320) {                  // 背景1が画面外に出たら
+                        bg1.x = -310;                      // 画面右端に移動
+                    }
+                    if (bg2.x >= 320) {                  // 背景2が画面外に出たら
+                        bg2.x = -310;                      // 画面右端に移動
+                    }
+
+
+                    
+                   }
+                   if (game_.input.right){
+
+                       console.log("right");
+                       bg1.x -= SCROLL_SPEED;
+                       bg2.x -= SCROLL_SPEED;
+                       console.log(bg1.x);
+                       console.log(bg2.x);
+                       if (bg1.x <= -320) {                  // 背景1が画面外に出たら
+                           bg1.x = 310;                      // 画面右端に移動
+                       }
+                       if (bg2.x <= -320) {                  // 背景2が画面外に出たら
+                           bg2.x = 310;                      // 画面右端に移動
+                       }
+                    }
+            });
+    
+                ///////////////////////////////////////////////////////////
+
+
+            scene.addEventListener(Event.TOUCH_START,function(e){
+                kuma.tl.moveBy(0, -120, 12, enchant.Easing.CUBIC_EASEOUT) // 12フレームかけて現在の位置から上に120px移動
+                .moveBy(0, 120, 12, enchant.Easing.CUBIC_EASEIN);   // 12フレームかけて現在の位置から下に120px移動
+
+            });
+            
+      /*      scene.addEventListener(Event.ENTER_FRAME,function(){
+                bg1.x -= SCROLL_SPEED;
+                bg2.x -= SCROLL_SPEED;
+                if (bg1.x <= -320) {                  // 背景1が画面外に出たら
+                    bg1.x = 320;                      // 画面右端に移動
+                }
+                if (bg2.x <= -320) {                  // 背景2が画面外に出たら
+                    bg2.x = 320;                      // 画面右端に移動
+                }
+                        });
+        */  
+        
+
+        
+
+            scene.addEventListener(Event.ENTER_FRAME,function(){
+                
+                scorll += SCROLL_SPEED;
+                scoreLabel.text = scorll.toString() + 'score';
+                test  =0;
+               // console.log(scorll);
+            
+                if(scorll % 640  ===0){
+                    buta.x = 320;
+                }
+                if(scorll % 340  ===0){
+                    suraimu.x = 320;
+                }
+                if(buta.x > - buta.width){
+                    buta.x  -= SCROLL_SPEED*5;
+                    if(buta.intersect(kuma)){
+                     //kumaDead();
+                    }
+                }
+                if(suraimu.x > - suraimu.width){
+                    suraimu.x  -= SCROLL_SPEED*1.2;
+                if(suraimu.intersect(kuma)){
+                  // kumaDead();
+                }
+                if(suraimu.frame >0){
+                    suraimu.frame  =0;
+                }
+                else{
+                    suraimu.frame = 1;
+                }
+            }
+                test +=1;
+        
+            });
+
+
+            var kumaDead  = function(){
+                console.log("testteste");
+                console.log(scorll);
+                console.log("//");
+                alert("game over");
+                kuma.frame = 3;
+                game_.pushScene(createGameoverScene(scorll));
+            }  
+
+            return scene;
+        };
+
+        var createGameoverScene = function(scroll){
+            var scene = new Scene();
+            console.log(scroll);
+            scene.backgroundColor= 'rgba(0,0,0,0.5)';
+            var gameoverImage = new Sprite(189,97);
+            gameoverImage.image = game_.assets['./img/gameover.png'];
+            gameoverImage.x = 66;
+            gameoverImage.y =170;
+            scene.addChild(gameoverImage);
+
+            var scoreLabel = new Label(scroll.toString());                        // ラベルを作る
+             //scoreLabel.text  = scroll.toString();
+            scoreLabel.width = 320;                                    // 幅を設定
+            scoreLabel.textAlign = 'center';                           // 文字を中央寄せ
+            scoreLabel.color = '#ffffff';                              // 文字を白色に
+            scoreLabel.x = 0;                                          // 横位置調整
+            scoreLabel.y = 12;                                         // 縦位置調整
+            scoreLabel.font = '10px sans-serif';                       // 28pxのゴシック体にする
+            scene.addChild(scoreLabel);                                // シーンに追加
+           
+            // スコア説明ラベル設定
+           /* var scoreInfoLabel = new Label('?走り抜いた');            // ラベルを作る
+            scoreInfoLabel.width = 320;                                // 幅を設定
+            scoreInfoLabel.textAlign = 'center';                       // 文字を中央寄せ
+            scoreInfoLabel.color = '#ffffff';                          // 文字を白色に
+            scoreInfoLabel.x = 0;                                      // 横位置調整
+            scoreInfoLabel.y = 130;                                    // 縦位置調整
+            scoreInfoLabel.font = '28px sans-serif';                   // 28pxのゴシック体にする
+            scene.addChild(scoreInfoLabel);*/
+            return scene;
+        };
+      
+        game_.replaceScene(createGameScene());  
+}
+    game_.start(); // ゲームをスタートさせます
+ 
+    // このようにスラッシュ2つで書き始めた行は「コメント」扱いとなります。
+    // プログラム中のメモとして活用しましょう。
+    /* また、このようにスラッシュと米印を使うと、
+        複数行に渡ってコメントを書くことができます。 */
+
+};
