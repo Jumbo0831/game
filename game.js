@@ -8,7 +8,7 @@ window.onload = function () {
     game_.fps = 10;                 // ゲームの進行スピードを設定
 
     //行の終わりには、;（セミコロン）を付けます。
-    game_.preload('./img/effect0.png', './img/start.png', './img/icon0.png', './img/map2.png', './img/start.png', './img/gameover.png', './img/clear.png', './img/retry_button.png', './img/chara1.png', './img/bg1.png', './img/bg2.png', './img/chara2.png', './img/chara6.png', './img/monster/bigmonster1.gif');
+    game_.preload('./img/effect0.png', './img/start.png', './img/icon0.png', './img/map2.png', './img/start.png', './img/gameover.png', './img/clear.png', './img/chara1.png', './img/chara2.png', './img/chara6.png', './img/monster/bigmonster1.gif');
     game_.onload = function () { // ゲームの準備が整ったらメインの処理を実行します。
 
         var createGameScene = function () {
@@ -663,10 +663,10 @@ window.onload = function () {
                 var char1Right = char1.x + char1HalfWidth;
                 var char2Right = char2.x + char2HalfWidth;
 
-                var hitFlag1 = char1Bottom <= char2.y;
-                var hitFlag2 = char1Right <= char2Left;
-                var hitFlag3 = char2Left <= char1Right;
-                var hitFlag4 = char2Bottom <= char1.y;
+                var hitFlag1 = char1Bottom > char2.y;
+                var hitFlag2 = char1Left < char2Right;
+                var hitFlag3 = char2Left < char1Right;
+                var hitFlag4 = char2Bottom > char1.y;
                 
                 var isHit = hitFlag1 && hitFlag2 && hitFlag3 && hitFlag4;
                 if (isHit) {
