@@ -1,20 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="x-ua-compatible" content="IE=Edge">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>game</title>
+    <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="enchant.js"></script>
-    <script type="text/javascript" src="main.js"></script>
-    <style type="text/css">
-        body {
-            margin: 0;
-            padding: 0;
+    <script type="text/javascript" src="game.js"> 
+     
+    </script>
+    <script>
+        /*var socket = io();
+        socket.emit('test', "test");
+        //ログインボタン押下イベント
+        function login() {
+            var form = document.forms.mainForm;
+            socket.emit('login', form.userName.value);
         }
-    </style>
+        socket.on('battle', function (user_name) {
+            console.log(user_name);
+            var player_name = user_name;
+        });*/
+    </script>
 </head>
 <body>
+   <!--
+    <form id="mainForm">
+        <input type="text" name="userName">
+        <input type="button" onClick="login()">
+    </form>
+    -->
 </body>
-</html>
 
+</html>
